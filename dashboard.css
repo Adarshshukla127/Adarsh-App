@@ -1,0 +1,577 @@
+/* ===================== DASHBOARD LAYOUT ===================== */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: var(--space-lg);
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: var(--space-md);
+}
+
+/* ===================== CARD BASE STYLES ===================== */
+.dashboard-card {
+    background-color: var(--light-color);
+    border-radius: var(--radius-xl);
+    padding: var(--space-lg);
+    box-shadow: var(--shadow-lg);
+    transition: var(--transition-normal);
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+}
+
+.dashboard-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius-xl);
+    padding: 2px;
+    background: linear-gradient(135deg, 
+        rgba(67, 198, 238, 0.3), 
+        rgba(72, 149, 239, 0.3), 
+        rgba(79, 214, 255, 0.3));
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    opacity: 0;
+    transition: var(--transition-normal);
+}
+
+.dashboard-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+}
+
+.dashboard-card:hover::before {
+    opacity: 1;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-md);
+    padding-bottom: var(--space-sm);
+    border-bottom: 1px solid var(--light-gray);
+}
+
+.card-header h3 {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    margin-bottom: 0;
+    font-weight: 600;
+    color: var(--primary-dark);
+}
+
+.card-header i {
+    color: var(--accent-color);
+    font-size: 1.2rem;
+}
+
+.card-body {
+    padding-top: var(--space-sm);
+}
+
+/* ===================== STATS CARD (GLOWING NEON) ===================== */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-md);
+    padding: var(--space-sm);
+}
+
+.stat-item {
+    background: linear-gradient(145deg, 
+        rgba(248, 249, 250, 0.9), 
+        rgba(233, 236, 239, 0.9));
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    padding: var(--space-md);
+    text-align: center;
+    transition: var(--transition-normal);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    cursor: default;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.stat-item::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, 
+        rgba(67, 97, 238, 0.1) 0%, 
+        rgba(72, 149, 239, 0.1) 50%, 
+        transparent 100%);
+    z-index: -1;
+    opacity: 0;
+    transition: var(--transition-normal);
+}
+
+.stat-item:hover::before {
+    opacity: 1;
+}
+
+.stat-item::after {
+    content: "";
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, 
+        var(--primary-color), 
+        var(--accent-color));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: var(--transition-normal);
+}
+
+.stat-item:hover::after {
+    transform: scaleX(1);
+}
+
+.stat-value {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: var(--space-xs);
+    transition: var(--transition-fast);
+    position: relative;
+    display: inline-block;
+}
+
+
+.stat-item:hover .stat-value::after {
+    transform: scaleX(1);
+}
+
+.stat-item:hover .stat-value {
+    color: var(--secondary-color);
+    text-shadow: 0 0 4px rgba(7, 29, 228, 0.3);
+}
+
+.stat-label {
+    font-size: 0.85rem;
+    color: var(--gray-color);
+    transition: var(--transition-fast);
+    font-weight: 500;
+}
+
+.stat-item:hover .stat-label {
+    color: var(--dark-color);
+    transform: translateY(2px);
+}
+
+/* ===================== QUOTE CARD (ANIMATED GRADIENT) ===================== */
+.quote-card {
+    background: linear-gradient(135deg, 
+        rgba(67, 97, 238, 0.1), 
+        rgba(72, 149, 239, 0.1));
+    position: relative;
+    overflow: hidden;
+}
+
+.quote-card::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        to bottom right, 
+        rgba(67, 97, 238, 0.05), 
+        rgba(72, 149, 239, 0.05), 
+        rgba(79, 214, 255, 0.05));
+    transform: rotate(30deg);
+    animation: gradientFlow 15s linear infinite;
+    z-index: 0;
+}
+
+@keyframes gradientFlow {
+    0% { transform: rotate(30deg) translateX(0); }
+    50% { transform: rotate(30deg) translateX(-25%); }
+    100% { transform: rotate(30deg) translateX(0); }
+}
+
+.quote-card > * {
+    position: relative;
+    z-index: 1;
+}
+
+#refresh-quote {
+    background: transparent;
+    border: none;
+    color: var(--primary-color);
+    cursor: pointer;
+    font-size: 1rem;
+    transition: var(--transition-fast);
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+#refresh-quote:hover {
+    transform: rotate(180deg);
+    background: rgba(67, 97, 238, 0.1);
+}
+
+#daily-quote {
+    font-style: italic;
+    margin-bottom: var(--space-sm);
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: var(--dark-color);
+}
+
+.quote-author {
+    text-align: right;
+    font-weight: 500;
+    color: var(--primary-dark);
+    font-size: 0.9rem;
+    position: relative;
+    padding-right: var(--space-md);
+}
+
+.quote-author::before {
+    content: "—";
+    position: absolute;
+    left: -15px;
+}
+
+/* ===================== ACTIONS CARD (HOVER EFFECTS) ===================== */
+.actions-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-sm);
+}
+
+.action-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-xs);
+    padding: var(--space-md) var(--space-sm);
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    color: white;
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: var(--transition-normal);
+    font-size: 0.9rem;
+    font-weight: 500;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.action-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--primary-dark), var(--secondary-color));
+    z-index: -1;
+    opacity: 0;
+    transition: var(--transition-normal);
+}
+
+.action-btn:hover::before {
+    opacity: 1;
+}
+
+.action-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(67, 97, 238, 0.2);
+}
+
+.action-btn i {
+    font-size: 1rem;
+    transition: var(--transition-fast);
+}
+
+.action-btn:hover i {
+    transform: scale(1.1);
+}
+
+/* ===================== TASKS CARD (INTERACTIVE) ===================== */
+.task-list {
+    list-style: none;
+}
+
+.task-item {
+    display: flex;
+    align-items: center;
+    padding: var(--space-sm) 0;
+    border-bottom: 1px solid var(--light-gray);
+    transition: var(--transition-fast);
+}
+
+.task-item:hover {
+    transform: translateX(5px);
+}
+
+.task-item:last-child {
+    border-bottom: none;
+}
+
+.task-checkbox {
+    margin-right: var(--space-sm);
+    accent-color: var(--primary-color);
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.task-label {
+    flex: 1;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.task-item.completed .task-label {
+    color: var(--gray-color);
+    text-decoration: line-through;
+}
+
+.task-actions {
+    display: flex;
+    gap: var(--space-xs);
+    opacity: 0;
+    transition: var(--transition-fast);
+}
+
+.task-item:hover .task-actions {
+    opacity: 1;
+}
+
+.task-btn {
+    background: none;
+    border: none;
+    color: var(--gray-color);
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: var(--transition-fast);
+}
+
+.task-btn:hover {
+    color: var(--primary-color);
+}
+
+.task-btn.delete:hover {
+    color: var(--danger-color);
+}
+
+.empty-state {
+    color: var(--gray-color);
+    text-align: center;
+    padding: var(--space-md) 0;
+    font-style: italic;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.empty-state i {
+    font-size: 1.5rem;
+    margin-bottom: var(--space-sm);
+    opacity: 0.5;
+}
+
+/* ===================== NOTES CARD (COLORFUL) ===================== */
+.notes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: var(--space-sm);
+}
+
+.note-item {
+    padding: var(--space-md);
+    background-color: white;
+    border: 1px solid var(--light-gray);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: var(--transition-normal);
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+}
+
+.note-item::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(to bottom, var(--primary-color), var(--accent-color));
+    transition: var(--transition-normal);
+}
+
+.note-item:hover::before {
+    width: 6px;
+}
+
+.note-item:nth-child(3n+1)::before {
+    background: linear-gradient(to bottom, var(--primary-color), var(--secondary-color));
+}
+
+.note-item:nth-child(3n+2)::before {
+    background: linear-gradient(to bottom, var(--accent-color), var(--success-color));
+}
+
+.note-item:nth-child(3n+3)::before {
+    background: linear-gradient(to bottom, var(--warning-color), var(--danger-color));
+}
+
+.note-item:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+}
+
+.note-content {
+    font-size: 0.9rem;
+    margin-bottom: var(--space-sm);
+}
+
+.note-date {
+    font-size: 0.7rem;
+    color: var(--gray-color);
+    text-align: right;
+}
+
+.add-note {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(72, 149, 239, 0.1);
+    border: 2px dashed var(--accent-color);
+    color: var(--accent-color);
+}
+
+.add-note:hover {
+    background-color: rgba(72, 149, 239, 0.2);
+}
+
+.add-note i {
+    font-size: 1.5rem;
+}
+
+/* ===================== DARK MODE STYLES ===================== */
+.dark-mode .dashboard-card {
+    background-color: rgba(37, 37, 37, 0.2);
+    color: #e0e0e0;
+    border-color: rgba(255, 255, 255, 0.05);
+}
+
+.dark-mode .dashboard-card::before {
+    background: linear-gradient(135deg, 
+        rgba(67, 97, 238, 0.3), 
+        rgba(72, 149, 239, 0.3), 
+        rgba(79, 214, 255, 0.3));
+}
+
+.dark-mode .card-header {
+    border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+.dark-mode .card-header h3 {
+    color: var(--accent-color);
+}
+
+.dark-mode .stat-item {
+    background: linear-gradient(145deg, 
+        rgba(33, 37, 41, 0.9), 
+        rgba(44, 49, 54, 0.9));
+    border-color: rgba(255, 255, 255, 0.05);
+}
+
+.dark-mode .stat-label {
+    color: #aaa;
+}
+
+.dark-mode .stat-item:hover .stat-label {
+    color: #fff;
+}
+
+.dark-mode .quote-card {
+    background: linear-gradient(135deg, 
+        rgba(67, 97, 238, 0.15), 
+        rgba(72, 149, 239, 0.15));
+}
+
+.dark-mode #daily-quote {
+    color: #f0f0f0;
+}
+
+.dark-mode .empty-state {
+    color: #777;
+}
+
+.dark-mode .note-item {
+    background-color: #2a2a2a;
+    border-color: #444;
+}
+
+.dark-mode .task-item {
+    border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+/* ===================== RESPONSIVE ADJUSTMENTS ===================== */
+@media (max-width: 1200px) {
+    .dashboard-grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    }
+    
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .actions-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .notes-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    }
+}
+
+@media (max-width: 480px) {
+    .dashboard-grid {
+        padding: var(--space-sm);
+    }
+    
+    .dashboard-card {
+        padding: var(--space-md);
+    }
+    
+    .notes-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
